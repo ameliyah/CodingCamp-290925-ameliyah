@@ -36,7 +36,14 @@ function renderTodo() {
     });
 }
 
-function deleteTodo() {}
+function deleteTodo() {
+    // Clear the todo array
+    todos = [];
+    
+    // Re-render the empty todo list
+    renderTodo();
+
+}
 
 function filterTodo() {}
 
