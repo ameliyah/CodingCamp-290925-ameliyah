@@ -31,10 +31,6 @@ function renderTodo(todoArray = todos) {
     // Clear existing list
     todoList.innerHTML = '';
 
-    // Debugging logs
-    console.log('Rendering array (length):', todoArray.length);
-    console.log('Array contents:', todoArray);
-
     // Check if there are no todos
     if (todoArray.length === 0) {
         todoList.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500">No todos available. Add one above!</td></tr>';
@@ -44,11 +40,23 @@ function renderTodo(todoArray = todos) {
     // Render each todo item
     todoArray.forEach((todo, index) => {
         const row = document.createElement('tr');
+
+        // Tentukan kelas berdasarkan status
+        let statusClass = '';
+        if (todo.status === 'Not Started') {
+            statusClass = 'not-started'; // Kelas untuk status "Not Started"
+        } else if (todo.status === 'In Progress') {
+            statusClass = 'in-progress'; // Kelas untuk status "In Progress"
+        } else if (todo.status === 'Completed') {
+            statusClass = 'completed'; // Kelas untuk status "Completed"
+        }
+
+        // Render setiap elemen todo
         row.innerHTML = `
             <td class="border p-2">${todo.task}</td>
             <td class="border p-2">${todo.date}</td>
             <td class="border p-2">
-                <select class="border rounded p-1" onchange="updateStatus(${index}, this)">
+                <select class="border rounded p-1 ${statusClass}" onchange="updateStatus(${index}, this)">
                     <option value="Not Started" ${todo.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
                     <option value="In Progress" ${todo.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                     <option value="Completed" ${todo.status === 'Completed' ? 'selected' : ''}>Completed</option>
@@ -58,6 +66,8 @@ function renderTodo(todoArray = todos) {
                 <button onclick="deleteTodo(${index})" class="bg-red-500 text-white p-1 rounded">Delete</button>
             </td>
         `;
+
+        // Menambahkan baris ke dalam tabel
         todoList.appendChild(row);
     });
 }

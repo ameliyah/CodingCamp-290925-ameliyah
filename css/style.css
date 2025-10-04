@@ -2,5 +2,41 @@ body {
     justify-items: center;
     align-content: center;
     height: 100vh;
+    background-color: #F5EFE6; /* Latar belakang halaman */
 }
 
+#todo-list {
+    background-color: #E8DFCA; /* Latar belakang untuk daftar todo */
+}
+
+#todo-list tr:nth-child(even) {
+    background-color: #E8DFCA; /* Memberikan warna latar belakang pada baris genap */
+}
+
+#todo-list th {
+    background-color: #6D94C5; /* Warna biru pada header tabel */
+    color: white; /* Warna teks putih pada header */
+}
+
+/* Status "Not Started" */
+.not-started {
+    background-color: #f8d7da; /* Merah muda */
+    color: #992531; /* Warna teks */
+}
+
+/* Status "In Progress" */
+.in-progress {
+    background-color: #fff3cd; /* Kuning muda */
+    color: #856404; /* Warna teks */
+}
+
+/* Status "Completed" */
+.completed {
+    background-color: #d4edda; /* Hijau muda */
+    color: #155724; /* Warna teks */
+}
+#todo-list td, #todo-list th {
+    border: 1px solid #191515;
+    padding: 8px;
+    text-align: center
+}
