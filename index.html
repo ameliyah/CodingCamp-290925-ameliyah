@@ -29,7 +29,6 @@
                 <input type="text" class="border rounded p-[8px]" id="todo-inputs" placeholder="Enter a new todo" required>
                 <input type="date" class="border rounded p-[8px]" id="todo-date" required>
                 <button type="button" onclick="addTodo()" class="bg-blue-500 text-white rounded p-[8px]">Add Todo</button>
-                
             </form>
          </section>
 
@@ -39,18 +38,25 @@
             <input type="date" class="border rounded p-[8px]" id="filter-date" onchange="filterTodo()">
             <button class="bg-green-500 rounded text-white p-[8px]" onclick="filterTodo()">Filter</button>
             <button class="bg-gray-500 rounded text-white p-[8px]" onclick="clearFilter()">Clear</button>
+            
         </section>
 
         <!-- List Todo -->
         <section class="mt-[16px]">
-            <ul id="todo-list" class="mt-4">
-                <!-- Todo items will be appended here -->
-                <p class="text center text-gray-500">No todos yet. Add one above!</p>
-            </ul>
+            <table id="todo-list" class="min-w-full border-collapse mt-4">
+                <thead>
+                    <tr>
+                        <th class="border p-2">Task</th>
+                        <th class="border p-2">Due Date</th>
+                        <th class="border p-2">Status</th>
+                        <th class="border p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="todo-list-body">
+                    <!-- Todo items will be appended here -->
+                </tbody>
+            </table>
         </section>
-
-        
-
 
 
     </main>

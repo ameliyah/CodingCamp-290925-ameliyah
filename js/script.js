@@ -8,26 +8,25 @@ function addTodo() {
 
     // Validate input
     if (validateInput(todoInput.value, todoDate.value)) {
-       let todo = { task: todoInput.value, date: todoDate.value };
-       todos.push(todo);
-       
-       // Clear input fields
-       todoInput.value = '';
-       todoDate.value = '';
-       
-       // Debugging logs
-       console.log('Todo added:', todo);
-       console.log('Current todos:', todos);
+        let todo = { task: todoInput.value, date: todoDate.value, status: 'Not Started' };
+        todos.push(todo);
+        
+        // Clear input fields
+        todoInput.value = '';
+        todoDate.value = '';
+        
+        // Debugging logs
+        console.log('Todo added:', todo);
+        console.log('Current todos:', todos);
 
-       /// Render the updated todo list
-       renderTodo();
-
+        // Render the updated todo list
+        renderTodo();
     }  
 }
 
 function renderTodo(todoArray = todos) {
     // Get the todo list container
-    const todoList = document.getElementById('todo-list');
+    const todoList = document.getElementById('todo-list').getElementsByTagName('tbody')[0];
 
     // Clear existing list
     todoList.innerHTML = '';
@@ -36,25 +35,30 @@ function renderTodo(todoArray = todos) {
     console.log('Rendering array (length):', todoArray.length);
     console.log('Array contents:', todoArray);
 
-
     // Check if there are no todos
     if (todoArray.length === 0) {
-        todoList.innerHTML = '<li class="text-center text-gray-500">No todos available. Add one above!</li>';
+        todoList.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500">No todos available. Add one above!</td></tr>';
         return;
     }
 
-    /// Render each todo item
+    // Render each todo item
     todoArray.forEach((todo, index) => {
-
-        const originalIndex = todos.indexOf(todo);
-        console.log(`Rendering todo: "${todo.task}" pada ${todo.date} (original index: ${originalIndex})`);
-        todoList.innerHTML += `<li class="border p-2 mb-2 flex justify-between items-center">
-            <div>
-                <p class="font-bold">${todo.task}</p>
-                <p class="text-sm text-gray-500">${todo.date}</p>
-            </div>
-            <button onclick="deleteTodo(${originalIndex})" class="bg-red-500 text-white p-1 rounded">Delete</button>
-        </li>`;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="border p-2">${todo.task}</td>
+            <td class="border p-2">${todo.date}</td>
+            <td class="border p-2">
+                <select class="border rounded p-1" onchange="updateStatus(${index}, this)">
+                    <option value="Not Started" ${todo.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                    <option value="In Progress" ${todo.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                    <option value="Completed" ${todo.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                </select>
+            </td>
+            <td class="border p-2">
+                <button onclick="deleteTodo(${index})" class="bg-red-500 text-white p-1 rounded">Delete</button>
+            </td>
+        `;
+        todoList.appendChild(row);
     });
 }
 
@@ -72,7 +76,7 @@ function deleteTodo(index) {
         renderTodo();
     }
 }
-    // Function to delete all todos
+
 function deleteAllTodo() {
     if (confirm('Are you sure you want to delete all todos?')) {
         todos = [];
@@ -80,7 +84,6 @@ function deleteAllTodo() {
     }
 }
 
-// Function to filter todos by date
 function filterTodo() {
     const filterDateInput = document.getElementById("filter-date");
     if (!filterDateInput) {
@@ -89,14 +92,12 @@ function filterTodo() {
     }
     const filterDate = filterDateInput.value;
 
-    // Debugging logs
     console.log('Filtering todos by date:', filterDate);
     console.log('Current todos:', todos);
 
-
     if (filterDate === '') {
-        console.log('no filter date provided, rendering all todos');
-        renderTodo(todos)
+        console.log('No filter date provided, rendering all todos');
+        renderTodo(todos);
         return;
     }
 
@@ -104,41 +105,39 @@ function filterTodo() {
         const match = todo.date === filterDate;
         console.log(`Checking todo: "${todo.task}" pada ${todo.date} === ${filterDate} ? Match: ${match}`);
         return match;
-    })
+    });
 
     console.log('Filtered todos (length):', filteredTodos.length);
     console.log('Filtered array:', filteredTodos);
 
     renderTodo(filteredTodos);
 
-    //
     if (filteredTodos.length === 0) {
         alert('No todos found for the selected date.');
     } else {
         alert(`Found ${filteredTodos.length} todo(s) for the selected date.`);
     }
-
 }
 
-// Function to clear filter
 function clearFilter() {
     const filterDateInput = document.getElementById('filter-date');
     if (filterDateInput) {
         filterDateInput.value = '';
     }
     renderTodo(todos);
-
 }
-    
 
-// Validation input function
+function updateStatus(index, selectElement) {
+    // Update status based on the selection
+    todos[index].status = selectElement.value;
+    renderTodo();
+}
+
 function validateInput(todo, date) {
     // Check if inputs are empty
     if (todo === '' || date === '') {
-        // show an alert if validation fails
         alert('Please enter both a todo and a date.');
         return false;
     }
-    // input is valid
     return true;
 }
